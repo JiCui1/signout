@@ -16,6 +16,7 @@
     </header>
     <!-- {{this.$parent.categories}} -->
     <TabContainer class="tab_container" :allItems="this.$parent.categories"/>
+    <!-- {{this.$store.categories}} -->
   </div>
 </template>
 
@@ -32,32 +33,6 @@ export default{
       this.$router.push({name:"Cart"})
     }
   },
-  data(){
-    return{
-      allAssets: this.$parent.categories
-    }
-  }
-  // data(){
-  //   return{
-  //     borrower: this.borrowerDash
-  //   }
-  // },
-  // props:{
-  //   borrowerDash:{
-  //     type:Object,
-  //     default:
-  //       {
-  //         firstName: "",
-  //         lastName: "",
-  //         borrower_id: "",
-  //         dc_email: "",
-  //       },
-  //   }, 
-  //   allItemsDash:{
-  //     type:Array,
-  //     default:[]
-  //   }
-  // }
 }
 </script>
 

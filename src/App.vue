@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <div id="nav" v-if="$route.path!='/'" >
-      <!-- <router-link to="/">Signin</router-link> | -->
       <router-link to="/dashboard" class="link_dash" :borrower="borrower" ><i class="material-icons">dashboard</i><h6>Dashboard</h6></router-link>
       <router-link to="/cart" class="link_cart"><i class="material-icons">shopping_cart</i><h6>Cart</h6></router-link>
       <router-link to="/profile" class="link_profile"><i class="material-icons">person</i><h6>Profile</h6></router-link>
@@ -18,6 +17,7 @@ export default {
       return {
         student_id: "",
         password: "",
+        signInError:"",
         categories: {},
         cart: [],
         cartItems: 0,
@@ -26,6 +26,9 @@ export default {
           lastName: "",
           borrower_id: "",
           dc_email: "",
+          other_email:"",
+          program_name:"",
+          program_year:"",
         },
       };
     },
@@ -41,7 +44,7 @@ export default {
         //alert(borrower_id);
         //gubalaraymond
         const options = {
-          url: "https://dca.durhamcollege.ca/~gubalaraymond/signout/services/get_assets.php",
+          url: "https://dca.durhamcollege.ca/~cuijiahua/signout/services/get_assets.php",
           method: "POST",
           data: {
             student_id: borrower_id,
@@ -53,7 +56,7 @@ export default {
             switch (res.data.error.id) {
               case 0:
                 this.categories = res.data.categories;
-                console.log(this.categories);
+              
                 break;
               /* add other responses here */
               default:
@@ -70,7 +73,7 @@ export default {
         //alert(student_id + password);
         console.log("login start")
         const options = {
-          url: "https://dca.durhamcollege.ca/~gubalaraymond/signout/services/login.php",
+          url: "https://dca.durhamcollege.ca/~cuijiahua/signout/services/login.php",
           method: "POST",
           data: {
             student_id: student_id,
@@ -88,13 +91,18 @@ export default {
             switch (res.data.error.id) {
               case 0:
                 console.log("login good")
+                console.log(res.data.borrower)
                 this.borrower.firstName = res.data.borrower.first_name;
                 this.borrower.lastName = res.data.borrower.last_name;
                 this.borrower.borrower_id = res.data.borrower.borrower_id;
                 this.borrower.dc_email = res.data.borrower.dc_email;
+                this.borrower.other_email = res.data.borrower.other_email;
+                this.borrower.program_name = res.data.borrower.program_name;
+                this.borrower.program_year = res.data.borrower.program_year;
                 //alert("route");
                 console.log(this.borrower);
                 this.getAssets(student_id);
+                this.$store.borrower = this.borrower
                 this.$router.push({name:"Dashboard"});
                 break;
               /* add other responses here */
@@ -106,7 +114,7 @@ export default {
                 break;
               default:
                 console.log("wrong info")
-                alert("Something went wrong please try again.");
+                this.$store.signInError = "ID/Password Error"
                 // document.getElementById("#studentID").focus();
                 break;
             }

@@ -12,7 +12,7 @@
       <div class="logo"><img src="@/assets/dc-logos-2020-full.svg"></div>
         <div class="info_button">
           <h1>Shopping Cart</h1>
-          <button id="checkout" @click="showConfirm">Checkout</button>
+          <button id="checkout" @click="addAssetsLoggedOut">Checkout</button>
         </div>
     </header>
     <section class="checkout_info">
@@ -24,7 +24,6 @@
         </div>
       </div>
     </section>
-    <!-- {{itemArray}} -->
   </div>
 </template>
 
@@ -47,6 +46,43 @@ export default{
     },
     showConfirm(){
       this.showModal = true
+    },
+    addAssetsLoggedOut() {
+      // loop through assets
+      let asset_list = "";
+      this.$store.cart.items.forEach(function (item) {
+        if (asset_list == "") {
+          asset_list = item.name;
+        } else {
+          asset_list += "|" + item.name;
+        }
+      });
+      alert(asset_list);
+      const options = {
+        url: "https://dca.durhamcollege.ca/~cuijiahua/signout/services/add_assets_logged_out.php",
+        method: "POST",
+        data: {
+          student_id: this.$store.borrower.borrower_id,
+          assets: asset_list,
+        },
+      };
+
+      this.$axios(options)
+        .then((res) => {
+          switch (res.data.error.id) {
+            case 0:
+              this.$store.cart.items = [];
+              this.showModal = true
+              break;
+            /* add other responses here */
+            default:
+              alert("Something went wrong with reserving your items.");
+              break;
+          }
+        })
+        .catch((err) => {
+          console.error("Get Assets Failed." + err);
+        });
     }
   }
 }

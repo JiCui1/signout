@@ -73,6 +73,7 @@ export default {
 </script>
 
 <style>
+
 .tab_container{
     margin-left:-1rem !important;
     /* display:grid;

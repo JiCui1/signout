@@ -29,6 +29,8 @@ const store = Vue.observable({
       store.cart.items.splice(index, 1);
     },
   },
+  borrower: {},
+  signInError: "",
 });
 
 Vue.prototype.$store = store;

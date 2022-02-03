@@ -28,7 +28,6 @@
               <img src="@/assets/id_card_icon.svg">
             </div>
             <input type="text" name="studentId" required placeholder="Student ID" v-model="login.studentId">
-            <p class="id_error left-align">{{idError}}</p>
           </div>
 
           <div class="input_holder">
@@ -37,7 +36,7 @@
             </div>
             <input type="password" name="password" required placeholder="Password" v-model="login.password">
             <div class="password_error_container row">
-              <p class="password_error col s6 left-align">{{passwordError}}</p>
+              <p class="password_error col s6 left-align">{{$store.signInError}}</p>
               <a href="#" class="col s6 right-align">Forgot Password?</a>
             </div>
           </div>
@@ -69,15 +68,12 @@ export default {
         studentId:"900000009",
         password:"dingo",
       },    
-      idError:"*Id Error",
-      passwordError:"*Password Error"
+      passwordError:"",
+      borrower:{}
     }
   },
   name: 'Signin',
   methods:{
-    // login(e){
-    //   this.$router.push("/dashboard")
-    // },    
 
     checkCredentials(e) {
       e.preventDefault()
@@ -87,7 +83,7 @@ export default {
         student_id: this.login.studentId,
         password: this.login.password,
       });
-    }
+    },
     
   }
 }
@@ -103,14 +99,6 @@ export default {
   background-color: #0B8261;
   font-family:Oswald;
 }
-
-/* header{
-  display:flex;
-  justify-content: space-between;
-  align-items: center;
-  padding:1rem;
-  height: 5%;
-} */
 
 header h1{
   font-size:3rem;
